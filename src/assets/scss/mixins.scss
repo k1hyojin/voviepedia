@@ -1,0 +1,55 @@
+@mixin  base($w,$h,$display){
+    width: $w;
+    height: $h;
+    display: $display;
+}
+@mixin flex($f,$just,$align){
+    flex-flow: $f; 
+    justify-content: $just;
+    align-items: $align;
+}
+@mixin grid($column,$rows){
+    grid-template-columns: $column;
+    grid-template-rows: $rows;
+}
+@mixin font($font,$size,$weight){
+    @if($font=="noto"){
+        font-family: 'Noto Sans KR', sans-serif;
+    }
+    @else if($font=="nanum"){
+        font-family: 'Nanum Gothic', sans-serif;
+    }
+    @else if($font=="black"){
+        font-family: 'Black Han Sans', sans-serif;
+    }
+    @else if($font=="robo"){
+        font-family: 'Roboto', sans-serif;
+    }
+    @else{
+        @error "font error";
+    }
+    font-size: $size;
+    font-weight: $weight;
+}
+@mixin text($fcolor,$falign,$fheight){
+    color:$fcolor;
+    text-align: $falign;
+    line-height: $fheight;
+}
+@mixin hideTapHighlightColor() {
+    //Prevent highlight colour when element is tapped
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+  }
+  
+  @mixin hardwareAccel() {
+    //Improve performance on mobile/tablet devices
+    transform: translateZ(0);
+  }
+  @mixin abc(){
+    // transform : translate()
+  }
+  
+  @mixin improveAntiAlias() {
+    //Improve aliasing on mobile/tablet devices
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  }

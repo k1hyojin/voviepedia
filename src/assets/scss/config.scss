@@ -1,0 +1,31 @@
+@charset "UTF-8";
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body,html,div,span,label,section,aside,footer,header,nav,video,table,tr,td,th{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    text-size-adjust: 100%;
+}
+a { background-color: transparent; color: black; text-decoration: none;}
+a:active, a:hover { outline: 0; color: black;}
+a:visited { text-decoration: none; color: black;}
+input, textarea { outline: 0; }
+input:focus, textarea:focus {outline: 0;}
+button, input[type="button"], input[type="submit"],input[type="reset"],input[type="checkbox"],input[type="radio"]{cursor: pointer;}
+legend{ border: 0; padding: 0;}
+textarea{overflow: auto;}
+table { border-collapse: collapse; border-spacing: 0;}
+ul,ol,dt,dl{margin: 0; padding: 0; list-style: none;}
+.clear{clear: both;}
+address,caption,cite,code,dfn,em,var {font-style: normal; display: block;}
+select { margin: 0;}
+p { margin: 0; padding: 0; word-break: break-all;}
+body{
+    background-color: #252525;
+    overflow-x: hidden;
+}
