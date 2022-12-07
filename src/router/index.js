@@ -13,9 +13,10 @@ const routes = [
 
   },
   {
-    path: '/detail',
+    path: '/detail/:id',
     name: 'Detail',
-    component: DetailList   
+    component: DetailList,
+    props:true
   },
   {
     path: '/search',
