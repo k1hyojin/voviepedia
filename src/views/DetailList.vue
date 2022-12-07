@@ -1,15 +1,177 @@
 <template>
   <div>
-    <!-- <span>{{i[$route.params.id].ids}}</span> -->
+    <span ref="backdrop" id="backdrop_image"></span>
+    <div v-if="this.loading === true">loading...</div>
+    <div v-else class="movielist">
+      <ul>
+        <li>
+            <img :src="this.backUrl+ this.movieDetail.poster_path" alt="">
+            <ol>
+              <li>{{this.movieDetail.original_title}}</li>
+              <li>{{this.movieDetail.runtime}}분</li>
+            </ol>
+        </li>
+        <li>
+          <div>
+          <h1>{{this.movieDetail.title}} ({{this.movieDetail.release_date.split("-")[0]}})</h1>
+          <hr>
+          <h2>줄거리</h2>
+          <p>{{this.movieDetail.overview}}</p>
+          <ol>
+            <li v-for="i,t in this.movieDetail.genres" :key={t}>{{i.name}}</li>
+          </ol>
+          <span class="likesBtn" @click="getLikes(this.movieDetail.id)">담아두기❤️</span>
+          <span class="trailBtn">예고편 보기🔮</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+      <!-- <iframe v-if="this.video === true" :src="videoURL" frameborder="0"></iframe> -->
   </div>
 </template>
 
 <script>
-export default {
+//genres, backdrop_path/ overview / poster_path / release_date / runtime / title /
 
-}
+export default {
+  data() {
+    return {
+      mId: "",
+      movieDetail: [],
+      trailer: "",
+      backUrl: "https://image.tmdb.org/t/p/original",
+      loading: true,
+      video:false,
+      // myLike:[]
+    };
+  },
+  props: {
+    " mId": Number,
+  },
+  methods: {
+    getLikes(like){
+          const arr = JSON.parse(localStorage.getItem("store")) || [];
+          const obj ={id : like , title : this.movieDetail.title, poster : this.movieDetail.poster_path };
+          arr.push(obj);
+          localStorage.setItem( "store" , JSON.stringify(arr));
+          // alert(`나의 리스트에 담았습니다!`);
+          // const setStorageItem(name : item) => localStorage.setItem(name, JSON.stringify(item));
+          // setStorageItem('store', store);     
+
+
+    }
+  },
+  computed: {
+    videoURL() {
+      return `https://www.youtube.com/embed/${this.trailer}`;
+    },
+  },
+  mounted() {
+    this.mId = this.$route.params.id;
+    this.$axios
+      .get(
+        `https://api.themoviedb.org/3/movie/${this.mId}?api_key=6ae188018e371e8e0f975652b9237f00&language=ko-KR`
+      )
+      .then((res) => {
+        this.movieDetail = res.data;
+        // console.log(this.movieDetail)
+        this.loading = false;
+        this.$refs.backdrop.style.background = `linear-gradient(
+            to left,
+            rgba(20, 20, 20, 0) 10%,
+            rgba(20, 20, 20, 0.25) 30%,
+            rgba(20, 20, 20, 0.5) 50%,
+            rgba(20, 20, 20, 0.75) 70%,
+            rgba(20, 20, 20, 1) 100%
+          ), url("${this.backUrl}${this.movieDetail.backdrop_path}") no-repeat center center`;
+        this.$refs.backdrop.style.backgroundSize = "cover";
+      });
+    // --------------------- youtube
+    this.$axios
+      .get(
+        `https://api.themoviedb.org/3/movie/${this.mId}/videos?api_key=6ae188018e371e8e0f975652b9237f00&language=ko-KR`
+      )
+      .then((res) => {
+        if(res.data.results.length === 0){
+          this.trailer = null;
+        }else{
+          this.video = true;
+          this.trailer = res.data.results[0].key;
+        }
+      })
+      .catch((err) => console.log(err));
+  },
+};
 </script>
 
-<style>
-
+<style lang="scss">
+.backdrop {
+  width: 100%;
+  object-fit: contain;
+}
+#backdrop_image {
+  position: relative;
+  @include base(100%, 500px, block);
+}
+.movielist {
+  position: absolute;
+  top: 150px;
+  &>ul{
+    @include base(100%, auto, flex);
+    @include flex(row nowrap, space-around, center);
+    &>li:first-child{
+      @include base(40%, 500px, flex);
+      @include flex(column nowrap, space-around, center);
+      &>img{
+        @include base( 300px, auto, block);
+        box-shadow: -5px 0px 30px #000;
+        object-fit: contain;
+      }
+      &>ol{
+        @include base(300px, auto, flex);
+        @include flex(row wrap, space-around, start);
+        &>li{
+          color: var(--orititle);
+          &:first-child{ width: 80%; }
+          &:last-child{ width: 20%;}
+        }
+      }
+    }
+    &>li:last-child{
+      @include base(60%, auto, block);
+        padding-right: 23%;
+        text-shadow: 2px 2px 5px #000;
+      &>div{
+        // background-color: aquamarine;
+        &>h1{
+          height: 100px;
+          line-height: 100px;
+        }
+        &>h2{
+          height: 60px;
+          line-height: 60px;
+        }
+        &>p{
+          min-height: 150px;
+          line-height: 22px;
+        }
+        &>ol{
+          @include base(auto, 30px, flex);
+          @include flex(row nowrap, start, center);
+          &>li{
+            @include base(auto, inherit, block);
+            line-height: 30px;
+            margin: 0 5px 0 5px;
+            color: var(--orititle);
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}
+.likesBtn, .trailBtn{
+  @extend %btn;
+  float: left;
+}
 </style>
