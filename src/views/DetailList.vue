@@ -21,19 +21,20 @@
             <li v-for="i,t in this.movieDetail.genres" :key={t}>{{i.name}}</li>
           </ol>
           <span class="likesBtn" @click="getLikes(this.movieDetail.id)">담아두기❤️</span>
-          <span class="trailBtn">예고편 보기🔮</span>
+          <span v-show="this.video" @click="this.show = true" class="trailBtn">예고편 보기🔮</span>
           </div>
         </li>
       </ul>
     </div>
-      <!-- <iframe v-if="this.video === true" :src="videoURL" frameborder="0"></iframe> -->
+      <VideoModal v-if="this.show === true" @close="showTrailer" :show="this.show" :trailURL="videoURL" />
   </div>
 </template>
 
 <script>
-//genres, backdrop_path/ overview / poster_path / release_date / runtime / title /
+import VideoModal from '../components/common/TrailerModal.vue'
 
 export default {
+  
   data() {
     return {
       mId: "",
@@ -42,7 +43,8 @@ export default {
       backUrl: "https://image.tmdb.org/t/p/original",
       loading: true,
       video:false,
-      // myLike:[]
+      isExist:false,
+      show:false,
     };
   },
   props: {
@@ -51,14 +53,21 @@ export default {
   methods: {
     getLikes(like){
           const arr = JSON.parse(localStorage.getItem("store")) || [];
-          const obj ={id : like , title : this.movieDetail.title, poster : this.movieDetail.poster_path };
-          arr.push(obj);
+          const obj = {id : like , title : this.movieDetail.title, poster : this.movieDetail.poster_path };
+          arr.map((d )=> {
+            like === d.id ? this.isExist = true : null
+          });
+          if(this.isExist){
+            alert("이미 담으셨어요!");
+          }else{
+            arr.push(obj);
+            alert(`나의 리스트에 담았습니다!`);
+          }
           localStorage.setItem( "store" , JSON.stringify(arr));
-          // alert(`나의 리스트에 담았습니다!`);
-          // const setStorageItem(name : item) => localStorage.setItem(name, JSON.stringify(item));
-          // setStorageItem('store', store);     
-
-
+    },
+    showTrailer(close){
+      this.show = close;
+      console.log(this.show)
     }
   },
   computed: {
@@ -101,10 +110,13 @@ export default {
       })
       .catch((err) => console.log(err));
   },
+  components :{
+    VideoModal
+  }
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .backdrop {
   width: 100%;
   object-fit: contain;
@@ -173,5 +185,8 @@ export default {
 .likesBtn, .trailBtn{
   @extend %btn;
   float: left;
+}
+.class{
+  display: block;
 }
 </style>
