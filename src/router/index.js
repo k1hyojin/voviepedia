@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeSection from '../views/HomeSection.vue'
 import DetailList from '../views/DetailList.vue'
-import Search from "../views/SearchList.vue"
+import SearchSection from "../views/SearchSection.vue"
 import MyList from "../views/MyList.vue"
 
 const routes = [
@@ -21,7 +21,7 @@ const routes = [
   {
     path: '/search',
     name: 'Search',
-    component: Search   
+    component: SearchSection   
   },
   {
     path: '/mypage',
