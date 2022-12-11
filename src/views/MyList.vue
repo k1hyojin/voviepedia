@@ -1,86 +1,41 @@
 <template>
   <div>
     <h1>내가 좋아하는 영화들  🎞</h1>
-    <div class="myListView">
-      <ul>
-        <li v-for="(i, x) in this.myList" :key="{ x }">
-          <router-link :to="`/detail/${i.id}`">
-            <img :src="this.backUrl + i.poster" />
-            <span>{{ i.title.length > 15 ? i.title.substr(0, 13) + ".." : i.title }}</span>
-          </router-link>
-          <button @click="removeMyList(i.id)">삭제하기</button>
-        </li>
-      </ul>
+    <div class="deleteAll">
+      <button @click="deleteAllList"> 전체삭제 </button>
     </div>
+    <MyMovieCard :myMovies="this.myList" />
   </div>
 </template>
 
 <script>
+import MyMovieCard from "../components/MyMovieCard.vue";
+
 export default {
-  data() {
-    return {
-      myList: [],
-      backUrl: "https://image.tmdb.org/t/p/w200",
-    };
-  },
   methods: {
-    removeMyList(discard){
-      for(let i = 0; i < this.myList.length; i++){
-        this.myList[i];
-        if(discard === this.myList[i].id){
-          this.myList.splice(i, 1);
-          i--;
-        }
+    deleteAllList(){
+      if(confirm(" 전체삭제 하시겠습니까? 확인을 누르시면 복구되지 않습니다. ")){
+        localStorage.removeItem("store");
+        location.reload();
       }
-      localStorage.setItem("store",JSON.stringify(this.myList))
-    }
+    },
   },
-  mounted() {
-    this.myList = JSON.parse(localStorage.getItem("store"));
-  },
+  components:{
+    MyMovieCard
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 h1 {
-  @include base(100%, 50px, block);
-  line-height: 50px;
-  text-align: center
+  @extend %pagetitle;
 }
-.myListView {
-  @include base(100%, auto, flex);
-  margin-top: 20px;
-  & > ul {
-    @include base(1000px, auto, flex);
-    @include flex(row wrap, start, center);
-    margin: 0 auto;
-    & > li {
-      @include base(200px, 280px, flex);
-      @include flex(column nowrap, center, center);
-      position: relative;
-      &>a{
-        @include base($cardwidth2, $cardheight2, flex);
-        @include flex(column nowrap, space-between, center);
-      }
-      & > a > img {
-        @extend %moviecard2;
-        transition: all 0.4s ease;
-        &:hover{
-          transform:scale(1.1);
-        }
-      }
-      & > a > span{
-        @include base($cardwidth2, 30px, block);
-        line-height: 30px;
-        font-size: 14px;
-      }
-      &>button{
-        @extend %btn;
-        position: absolute;
-        bottom: 70px;
-        left: 50px;
-      }
-    }
+.deleteAll{
+  @include base(1000px, 60px, flex);
+  margin:0 auto;
+  @include flex(row nowrap, end, center);
+  &>button{
+    @extend %btn;
   }
 }
 </style>
