@@ -12,9 +12,9 @@ export default {
 
 <style lang="scss">
     #header{
-        @include base(100% , 150px, block);
+        @include base(100% , 100px, block);
         text-align: center;
-        line-height: 150px;
+        line-height: 100px;
         font-size: 40px;
         color: rgb(211, 6, 81);
     }
