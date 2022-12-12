@@ -3,7 +3,7 @@
     <ul ref="cards">
       <li v-for="(i, x) in this.movieItem" :key="{ x }" ref="cardli">
         <router-link :to="`/detail/${i.id}`"> 
-        <img :src="this.url + i.poster_path" />
+        <img :src="backUrl+ i.poster_path" />
         <span>{{i.title.length > 16 ? i.title.substr(0, 15) + ".." : i.title}}</span>
         </router-link>
       </li>
@@ -14,12 +14,12 @@
 </template>
 
 <script>
+import { mapState} from 'vuex';
 export default {
     name: 'HomeSection',
     data(){
       return{
         movieItem: "",
-        url: "https://image.tmdb.org/t/p/w200",
         arrow : 0,
       }
     },
@@ -51,7 +51,7 @@ export default {
      this.$axios.get(this.movie)
      .then((res) => {
        this.movieItem = res.data.results.slice(0, 15);
-       this.loading=false;
+       this.$emit('load',false);
      })
      .catch((err) => console.log(err));
    },
@@ -61,7 +61,8 @@ export default {
     },
     cardWidth(){
       return this.$refs.cardli[0].offsetWidth + 10;
-    }
+    },
+    ...mapState(['backUrl'])
    },
 };
 </script>

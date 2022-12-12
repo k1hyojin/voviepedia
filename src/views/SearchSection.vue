@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import SearchList from "../components/searchList.vue";
+import SearchList from "../components/SearchList";
 
 export default {
   data() {
@@ -31,7 +31,6 @@ export default {
       sMovie: "",
       lang: "ko-KR",
       mResult: "",
-      backUrl: "https://image.tmdb.org/t/p/original",
     };
   },
   methods: {

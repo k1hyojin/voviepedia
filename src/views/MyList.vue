@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h1>내가 좋아하는 영화들  🎞</h1>
+    <h1>내가 좋아하는 영화들 🎞</h1>
     <div class="deleteAll">
-      <button @click="deleteAllList"> 전체삭제 </button>
+      <button @click="deleteAllList">전체삭제</button>
     </div>
-    <MyMovieCard :myMovies="this.myList" />
+    <MyMovieCard :myMovie="this.$store.getters.myMovie" @deletemine="removeMyList" />
   </div>
 </template>
 
@@ -13,15 +13,29 @@ import MyMovieCard from "../components/MyMovieCard.vue";
 
 export default {
   methods: {
-    deleteAllList(){
-      if(confirm(" 전체삭제 하시겠습니까? 확인을 누르시면 복구되지 않습니다. ")){
+    deleteAllList() {
+      if (
+        confirm(" 전체삭제 하시겠습니까? 확인을 누르시면 복구되지 않습니다. ")
+      ) {
         localStorage.removeItem("store");
         location.reload();
       }
     },
+    removeMyList(discard) {
+      for (let i = 0; i < this.$store.getters.myMovie.length; i++) {
+        if (discard === this.$store.getters.myMovie[i].id) {
+          this.$store.getters.myMovie.splice(i, 1);
+          i--;
+        }
+      }
+      localStorage.setItem("store", JSON.stringify(this.$store.getters.myMovie));
+    },
   },
-  components:{
-    MyMovieCard
+  components: {
+    MyMovieCard,
+  },
+  mounted(){
+    this.$store.getters.myMovie;
   }
 };
 </script>
@@ -30,11 +44,11 @@ export default {
 h1 {
   @extend %pagetitle;
 }
-.deleteAll{
+.deleteAll {
   @include base(1000px, 60px, flex);
-  margin:0 auto;
+  margin: 0 auto;
   @include flex(row nowrap, end, center);
-  &>button{
+  & > button {
     @extend %btn;
   }
 }

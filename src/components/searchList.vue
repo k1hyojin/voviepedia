@@ -2,7 +2,7 @@
   <ul class="searchResult">
     <li v-for="(i, x) in this.mResult" :key="{ x }">
       <div>
-        <img :src="this.backUrl + i.poster_path" />
+        <img :src="i.poster_path === null ?require('../assets/noimage.svg') : oriUrl+ i.poster_path" />
         <button @click="getLikes2(i.id)">담아두기 ❤️</button>
       </div>
       <div>
@@ -26,17 +26,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   data() {
     return {
       isExist: false,
       sTitle: "",
       sPoster: "",
-      backUrl: "https://image.tmdb.org/t/p/original",
     };
   },
   props: {
     mResult: String,
+    noimage: String
   },
   methods: {
     getLikes2(like) {
@@ -60,6 +61,9 @@ export default {
       localStorage.setItem("store", JSON.stringify(arr));
     },
   },
+  computed:mapState([
+    'oriUrl'
+  ])
 };
 </script>
 

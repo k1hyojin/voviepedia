@@ -1,45 +1,32 @@
 <template>
   <div class="myListView">
     <ul>
-      <li v-for="(i, x) in this.myMovies" :key="{ x }">
+      <li v-for="(i, x) in this.myMovie" :key="{ x }">
         <router-link :to="`/detail/${i.id}`">
           <img :src="this.backUrl + i.poster" />
           <span>{{
             i.title.length > 15 ? i.title.substr(0, 13) + ".." : i.title
           }}</span>
         </router-link>
-        <button @click="removeMyLists(i.id)">삭제하기</button>
+        <button @click="deleteMyList(i.id)">삭제하기</button>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
+import {mapState} from 'vuex';
 export default {
-  data() {
-    return {
-      backUrl: "https://image.tmdb.org/t/p/w200",
-    };
-  },
   props: {
-    // deleteMyLists : Function
+    myMovie :String
+},
+computed:{
+    ...mapState([ 'backUrl'])
 },
   methods: {
-  removeMyList(discard) {
-      for (let i = 0; i < this.myMovies.length; i++) {
-        this.myMovies[i];
-        if (discard === this.myMovies[i].id) {
-          this.myMovies.splice(i, 1);
-          i--;
-        }
-      }
-      localStorage.setItem("store", JSON.stringify(this.myMovies));
-    },
-  },
-  computed: {
-    myMovies() {
-      return JSON.parse(localStorage.getItem("store"));
-    },
+    deleteMyList(myid){
+        this.$emit('deletemine',myid);
+    }
   },
 };
 </script>
