@@ -12,5 +12,6 @@ module.exports = defineConfig({
       }
     }
   },
+  outputDir: './docs',
   publicPath : '/vovipedia/'
 })
