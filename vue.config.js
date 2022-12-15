@@ -12,6 +12,7 @@ module.exports = defineConfig({
       }
     }
   },
-  outputDir: './docs',
-  publicPath : '/vovipedia/'
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/voviepedia'
+    : '/'
 })
