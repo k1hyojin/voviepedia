@@ -4,13 +4,13 @@
     <div class="deleteAll">
       <button @click="deleteAllList">전체삭제</button>
     </div>
-    <MyMovieCard :myMovie="this.$store.getters.myMovie" @deletemine="removeMyList" />
+    <MyMovieCard  @deletemine="removeMyList" />
   </div>
 </template>
 
 <script>
 import MyMovieCard from "../components/MyMovieCard.vue";
-
+import {mapGetters} from 'vuex';
 export default {
   methods: {
     deleteAllList() {
@@ -22,20 +22,23 @@ export default {
       }
     },
     removeMyList(discard) {
-      for (let i = 0; i < this.$store.getters.myMovie.length; i++) {
-        if (discard === this.$store.getters.myMovie[i].id) {
-          this.$store.getters.myMovie.splice(i, 1);
+      for (let i = 0; i < this.myMovie.length; i++) {
+        if (discard === this.myMovie[i].id) {
+          this.myMovie.splice(i, 1);
           i--;
         }
       }
-      localStorage.setItem("store", JSON.stringify(this.$store.getters.myMovie));
+      localStorage.setItem("store", JSON.stringify(this.myMovie));
     },
   },
   components: {
     MyMovieCard,
   },
+  computed:{
+    ...mapGetters(['myMovie'])
+  },
   mounted(){
-    this.$store.getters.myMovie;
+    this.$store.commit('loadMovie');
   }
 };
 </script>

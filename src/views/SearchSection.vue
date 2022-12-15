@@ -30,12 +30,12 @@ export default {
     return {
       sMovie: "",
       lang: "ko-KR",
-      mResult: "",
+      mResult: [],
     };
   },
   methods: {
     sMovieList() {
-      this.mResult = '';
+      this.mResult = [];
       this.$axios
         .get(
           `https://api.themoviedb.org/3/search/movie?api_key=6ae188018e371e8e0f975652b9237f00&language=${this.lang}&query=${this.sMovie}&page=1&include_adult=false`

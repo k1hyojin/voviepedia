@@ -93,7 +93,7 @@ export default {
     videoURL() {
       return `https://www.youtube.com/embed/${this.trailer}`;
     },
-    ...mapState([ 'backUrl' ])
+    ...mapState([ 'oriUrl', 'backUrl' ])
   },
   mounted() {
     this.mId = this.$route.params.id;
@@ -117,7 +117,7 @@ export default {
             rgba(20, 20, 20, 0.5) 50%,
             rgba(20, 20, 20, 0.75) 70%,
             rgba(20, 20, 20, 1) 100%
-          ), url("${this.backUrl}${this.movieDetail.backdrop_path}") no-repeat center center`;
+          ), url("${this.oriUrl}${this.movieDetail.backdrop_path}") no-repeat center center`;
         this.$refs.backdrop.style.backgroundSize = "cover";
       });
   },

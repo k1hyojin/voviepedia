@@ -15,13 +15,11 @@
 </template>
 
 <script>
-import {mapState} from 'vuex';
+import {mapState, mapGetters} from 'vuex';
 export default {
-  props: {
-    myMovie :String
-},
 computed:{
-    ...mapState([ 'backUrl'])
+    ...mapState([ 'backUrl']),
+    ...mapGetters(['myMovie'])
 },
   methods: {
     deleteMyList(myid){

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapState} from 'vuex';
+import { mapState } from 'vuex';
 export default {
     name: 'HomeSection',
     data(){
@@ -62,8 +62,8 @@ export default {
     cardWidth(){
       return this.$refs.cardli[0].offsetWidth + 10;
     },
-    ...mapState(['backUrl'])
-   },
+    ...mapState(['backUrl']),
+},
 };
 </script>
 

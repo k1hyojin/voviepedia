@@ -36,21 +36,21 @@ export default {
     };
   },
   props: {
-    mResult: String,
+    mResult: Array,
     noimage: String
   },
   methods: {
     getLikes2(like) {
-      for (let i = 0; i < this.mResult.length; i++) {
-        if (like === this.mResult[i].id) {
-          this.sTitle = this.mResult[i].title;
-          this.sPoster = this.mResult[i].poster_path;
+      for (let item of this.mResult) {
+        if (like === item.id) {
+          this.sTitle = item.title;
+          this.sPoster = item.poster_path;
         }
       }
       const arr = JSON.parse(localStorage.getItem("store")) || [];
       const obj = { id: like, title: this.sTitle, poster: this.sPoster };
       arr.map((d) => {
-        like === d.id ? (this.isExist = true) : null;
+        d.id === like ? this.isExist = true : this.isExist =false;
       });
       if (this.isExist) {
         alert("이미 담으셨어요!");
